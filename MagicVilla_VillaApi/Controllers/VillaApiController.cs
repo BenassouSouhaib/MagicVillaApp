@@ -1,4 +1,5 @@
 ﻿using MagicVilla_VillaApi.Data;
+using MagicVilla_VillaApi.Models;
 using MagicVilla_VillaApi.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,6 +39,15 @@ namespace MagicVilla_VillaApi.Controllers
             // This Code add explict modelState depndes on the endpoint
             // if (!ModelState.IsValid)
             //     return BadRequest(ModelState);
+            if (
+                VillaStore.villaList.FirstOrDefault(n =>
+                    n.Name.ToLower() == villaDto.Name.ToLower()
+                ) != null
+            )
+            {
+                ModelState.AddModelError("CustomError", "Villa Already Exists !");
+                return BadRequest(ModelState);
+            }
             if (villaDto == null)
                 return BadRequest(villaDto);
             if (villaDto.Id > 0)
